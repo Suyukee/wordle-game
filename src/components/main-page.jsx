@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Header from './header';
+import Wordle from './wordle';
 
 const MainPage = () => {
 	const [solution, setSolution] = useState(null);
@@ -19,7 +20,7 @@ const MainPage = () => {
 	return (
 		<main className="main">
 			<Header />
-			{solution && <div>Случайное слово: {solution}</div>}
+			{solution && <Wordle solution={solution} />}
 		</main>
 	);
 };
