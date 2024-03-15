@@ -10,7 +10,28 @@ const useWordle = (solution) => {
 	// записать предложенные варианты в массив букв
 	// пример [{key: 'a', color: 'yellow'}]
 	const formatGuess = () => {
-		console.log('форматирование', currentGuess);
+		let solutionArray = [...solution];
+		let formattedGuess = [...currentGuess].map((l) => {
+			return { key: l, color: 'grey' };
+		});
+
+		// найти зелённые буквы
+		formattedGuess.forEach((l, i) => {
+			if (solutionArray[i] === l.key) {
+				formattedGuess[i].color = 'green';
+				solutionArray[i] = null;
+			}
+		});
+
+		// найти жёлтые буквы
+		formattedGuess.forEach((l, i) => {
+			if (solutionArray.includes(l.key) && l.color !== 'green') {
+				formattedGuess[i].color = 'yellow';
+				solutionArray[solutionArray.indexOf(l.key)] = null;
+			}
+		});
+
+		return formattedGuess;
 	};
 
 	// добавить новое предложенный вариант в состояние вариантов
@@ -37,7 +58,8 @@ const useWordle = (solution) => {
 				console.log('Длина слова должна иметь 5 символов');
 				return;
 			}
-			formatGuess();
+			const formatted = formatGuess();
+			console.log(formatted);
 		}
 		if (key === 'Backspace') {
 			setCurrentGuess((prev) => {

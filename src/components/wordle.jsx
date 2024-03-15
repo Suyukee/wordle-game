@@ -11,9 +11,10 @@ const Wordle = ({ solution }) => {
 	}, [handleKeyup]);
 
 	return (
-		<div>
-			Текущее предположение - {currentGuess} | {solution}
-		</div>
+		<main>
+			<div>Решение - {solution}</div>
+			<div>Текущее предположение - {currentGuess}</div>
+		</main>
 	);
 };
 
