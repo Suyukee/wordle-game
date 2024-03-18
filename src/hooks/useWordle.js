@@ -3,8 +3,8 @@ import { useState } from 'react';
 const useWordle = (solution) => {
 	const [turn, setTurn] = useState(0);
 	const [currentGuess, setCurrentGuess] = useState('');
-	const [guesses, setGuesses] = useState([]); // каждое предположение является массивом
-	const [history, setHistory] = useState(['кирка']); // каждое предположение является строкой
+	const [guesses, setGuesses] = useState([...Array(6)]); // каждое предположение является массивом
+	const [history, setHistory] = useState([]); // каждое предположение является строкой
 	const [isCorrect, setIsCorrect] = useState(false);
 
 	// записать предложенные варианты в массив букв
@@ -37,7 +37,23 @@ const useWordle = (solution) => {
 	// добавить новое предложенный вариант в состояние вариантов
 	// обновить состояние isCorrect, если состояние корректно
 	// увеличить на один состояние ходов
-	const addNewGuess = () => {};
+	const addNewGuess = (formattedGuess) => {
+		if (currentGuess === solution) {
+			setIsCorrect(true);
+		}
+		setGuesses((prevGuesses) => {
+			let newGuesses = [...prevGuesses];
+			newGuesses[turn] = formattedGuess;
+			return newGuesses;
+		});
+		setHistory((prevHistory) => {
+			return [...prevHistory, currentGuess];
+		});
+		setTurn((prevTurn) => {
+			return prevTurn + 1;
+		});
+		setCurrentGuess('');
+	};
 
 	// обработать событие keyup и отследить предложенный вариант
 	// если пользователь нажмёт enter, добавить предложенный вариант
@@ -59,7 +75,7 @@ const useWordle = (solution) => {
 				return;
 			}
 			const formatted = formatGuess();
-			console.log(formatted);
+			addNewGuess(formatted);
 		}
 		if (key === 'Backspace') {
 			setCurrentGuess((prev) => {
